@@ -1,0 +1,164 @@
+{
+  "generated_at": "2026-10-26T23:50:00+08:00",
+  "weknora": {
+    "project": "smc-weknora",
+    "version": "0.8.3-dev.e1f9a616",
+    "commit": "e1f9a6166a593a4804a2f99f1d942919c9cc8ea7"
+  },
+  "entries": {
+    "lan": "http://192.168.102.104:18080",
+    "external": "http://sncon.k9.luyouxia.net:44813"
+  },
+  "synthetic": {
+    "status": "created",
+    "users": [
+      {
+        "id": "a157311f-e980-4b13-acc9-f65321559fb7",
+        "username": "octop-accept-a",
+        "email": "octop-accept-a@example.invalid",
+        "tenant_id": 10003,
+        "role": "owner",
+        "system_admin": false
+      },
+      {
+        "id": "eef7e0b9-e128-444a-9753-0d2366d37318",
+        "username": "octop-accept-b",
+        "email": "octop-accept-b@example.invalid",
+        "tenant_id": 10004,
+        "role": "owner",
+        "system_admin": false
+      }
+    ],
+    "tenants": [
+      {
+        "id": 10003,
+        "name": "octop-accept-a's Workspace"
+      },
+      {
+        "id": 10004,
+        "name": "octop-accept-b's Workspace"
+      }
+    ],
+    "knowledge_bases": [
+      {
+        "id": "8fe88491-f43f-4ed2-8715-a4bd100fb38d",
+        "name": "octop-accept-kb-a",
+        "tenant_id": 10003,
+        "type": "document",
+        "documents": 0
+      },
+      {
+        "id": "5c4819e0-5c72-4bad-94bf-3b068f46877b",
+        "name": "octop-accept-kb-b",
+        "tenant_id": 10004,
+        "type": "document",
+        "documents": 0
+      }
+    ],
+    "api_keys": [
+      {
+        "id": 4,
+        "name": "octop-accept-private-retrieve-a",
+        "tenant_id": 10003,
+        "capabilities": [
+          "retrieve"
+        ],
+        "knowledge_base_ids": [
+          "8fe88491-f43f-4ed2-8715-a4bd100fb38d"
+        ],
+        "location": "/root/.octop-secrets/octop-accept-a-retrieve.key"
+      },
+      {
+        "id": 5,
+        "name": "octop-accept-private-retrieve-b",
+        "tenant_id": 10004,
+        "capabilities": [
+          "retrieve"
+        ],
+        "knowledge_base_ids": [
+          "5c4819e0-5c72-4bad-94bf-3b068f46877b"
+        ],
+        "location": "/root/.octop-secrets/octop-accept-b-retrieve.key"
+      }
+    ],
+    "documents": [],
+    "passwords_location": "/root/.octop-secrets/octop-accept-{a,b}.password (root 600)",
+    "note": "个人租户已建、库与 Key 已验；库内 0 文档，检索返回 200 空结果（Embedding 由 Octop 侧创建）。"
+  },
+  "existing": {
+    "users": [
+      {
+        "id": "321c04ef-6db1-4f1c-a873-2f7eb56624d3",
+        "username": "loudon",
+        "email": "loudongwang@gmail.com",
+        "system_admin": true,
+        "tenant_id": 10000
+      },
+      {
+        "id": "d4e89f70-4965-4ebf-9912-2d0488216b7e",
+        "username": "admin",
+        "email": "smc-copilot@smart-core.com",
+        "system_admin": false,
+        "tenant_id": 10001
+      }
+    ],
+    "tenants": [
+      {
+        "id": 10000,
+        "name": "loudon's Workspace"
+      },
+      {
+        "id": 10001,
+        "name": "admin's Workspace"
+      }
+    ]
+  },
+  "probe_artifacts": [
+    {
+      "type": "tenant",
+      "id": 10002,
+      "name": "octop-probe-autokey",
+      "state": "soft_deleted"
+    },
+    {
+      "type": "knowledge_base",
+      "id": "b0534ae6-52cb-4982-b27f-a343e7780331",
+      "name": "octop-probe-kb-1793029371",
+      "state": "soft_deleted"
+    },
+    {
+      "type": "api_key",
+      "id": 2,
+      "name": "octop-probe-retrieve-1793029371",
+      "state": "revoked"
+    }
+  ],
+  "enterprise_shared": {
+    "tenant_id": 10001,
+    "knowledge_base_ids": [
+      "805b7515-6cff-4db4-978a-cad5b762a9fd"
+    ],
+    "kb_name": "工作流程",
+    "document_ids": [],
+    "document_count": 0,
+    "api_key_id": 3,
+    "api_key_name": "octop-enterprise-shared-retrieve",
+    "api_key_capabilities": [
+      "retrieve"
+    ],
+    "api_key_location": "/root/.octop-secrets/weknora-enterprise-retrieve.key (root 600, 不写入本文件)",
+    "note": "该库当前 0 文档，SEARCH 返回 200 空结果；内容验收需先入库文档（依赖 Embedding 模型）。"
+  },
+  "acceptance_queries": {
+    "status": "structure_only",
+    "reason": "个人租户无 Embedding 模型（按约定由 Octop 侧创建），未入库文档",
+    "planned_markers": [
+      "OCTOP-ACCEPT-A",
+      "OCTOP-ACCEPT-B",
+      "OCTOP-ACCEPT-SHARED"
+    ],
+    "planned_query": "OCTOP-ACCEPT",
+    "observed": "A/B 各自 knowledge-search 返回 200 且 data=[]"
+  },
+  "updated_at": "2026-10-27T00:05:00+08:00"
+}

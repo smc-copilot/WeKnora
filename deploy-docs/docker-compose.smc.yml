@@ -1,0 +1,55 @@
+# WeKnora deployment override for smc-weknora (project: smc-weknora)
+# Always use together with the upstream file:
+#   docker compose -p smc-weknora -f docker-compose.yml -f deploy-docs/docker-compose.smc.yml ...
+# Purpose: unique names (container/network/volume), LAN-bound web entry,
+# no published backend port, Redis persistence, log rotation.
+
+services:
+  frontend:
+    container_name: smc-weknora-frontend
+    # Bound to the LAN interface only (see WEKNORA_WEB_BIND in .env), not 0.0.0.0:
+    # docker0 / br-* bridges published on all interfaces would otherwise expose it
+    # to every container network. Set WEKNORA_WEB_BIND=127.0.0.1 to go loopback-only.
+    ports: !override
+      - "${WEKNORA_WEB_BIND:-192.168.102.104}:${WEKNORA_WEB_PORT:-18080}:80"
+    logging: &default-logging
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  app:
+    container_name: smc-weknora-app
+    # API is reached through the frontend proxy (/api/); no host publish.
+    ports: !reset []
+    logging: *default-logging
+
+  docreader:
+    container_name: smc-weknora-docreader
+    logging: *default-logging
+
+  postgres:
+    container_name: smc-weknora-postgres
+    logging: *default-logging
+
+  redis:
+    container_name: smc-weknora-redis
+    # Upstream declares no volume for redis; persist AOF so queued work
+    # survives a container recreate.
+    volumes:
+      - redis-data:/data
+    logging: *default-logging
+
+networks:
+  WeKnora-network:
+    name: smc-weknora-net
+
+volumes:
+  postgres-data:
+    name: smc-weknora-postgres-data
+  data-files:
+    name: smc-weknora-data-files
+  docreader-tmp:
+    name: smc-weknora-docreader-tmp
+  redis-data:
+    name: smc-weknora-redis-data
